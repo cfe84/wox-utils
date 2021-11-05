@@ -35,7 +35,9 @@ function copyResources() {
   fs.copyFileSync(getResourceFileName("run.bat"), getTargetFileName("run.bat"))
   fs.copyFileSync(getResourceFileName("circle.jpg"), getTargetFileName("img", "logo.jpg"))
   fs.copyFileSync(getResourceFileName("pack.js"), getTargetFileName("pack.js"))
-  fs.copyFileSync(getResourceFileName("index.ts"), getTargetFileName("src", "index.ts"))
+  if (!fs.existsSync(getTargetFileName("index.ts"))) {
+    fs.copyFileSync(getResourceFileName("index.ts"), getTargetFileName("src", "index.ts"))
+  }
   fs.copyFileSync(getResourceFileName("RenameMeHandler.ts"), getTargetFileName("src", "RenameMeHandler.ts"))
 }
 
