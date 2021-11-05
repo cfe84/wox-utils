@@ -30,15 +30,26 @@ function getTargetFileName(...filenames) {
 }
 
 function copyResources() {
-  fs.copyFileSync(getResourceFileName("run.bat"), getTargetFileName("run.bat"))
   fs.mkdirSync(getTargetFileName("img"), { recursive: true })
+  fs.mkdirSync(getTargetFileName("src"), { recursive: true })
+  fs.copyFileSync(getResourceFileName("run.bat"), getTargetFileName("run.bat"))
   fs.copyFileSync(getResourceFileName("circle.jpg"), getTargetFileName("img", "logo.jpg"))
   fs.copyFileSync(getResourceFileName("pack.js"), getTargetFileName("pack.js"))
+  fs.copyFileSync(getResourceFileName("index.ts"), getTargetFileName("src", "index.ts"))
+  fs.copyFileSync(getResourceFileName("RenameMeHandler.ts"), getTargetFileName("src", "RenameMeHandler.ts"))
 }
 
 function updatePackage(package) {
   package.scripts["pack"] = "node pack.js"
   package.scripts["bnp"] = "npm run build && npm run pack"
+  if (!package.dependencies) {
+    package.dependencies = {}
+  }
+  if (!package.devDependencies) {
+    package.devDependencies = {}
+  }
+  package.dependencies["wox-ts"] = "^1.0.0"
+  package.devDependencies["adm-zip"] = "^0.5.9"
   package["woxPack"] = {
     "target": package.name + ".wox",
     "pullNodeModules": true,
